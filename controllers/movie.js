@@ -4,7 +4,22 @@ const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
 module.exports.getMovies = (req, res, next) => Movie.find({})
-  .then((movies) => res.send(movies))
+  .then((movies) => {
+    const refinedMovies = movies.map((movie) => ({
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: movie.image,
+      trailerLink: movie.trailerLink,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+      thumbnail: movie.thumbnail,
+      movieId: movie.movieId,
+    }));
+    res.send(refinedMovies);
+  })
   .catch(next);
 
 module.exports.addMovie = (req, res, next) => Movie.create({

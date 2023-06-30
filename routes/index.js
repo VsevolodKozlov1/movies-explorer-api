@@ -29,7 +29,7 @@ router.post(
   login,
 );
 
-router.get('/signout', (req, res) => {
+router.post('/signout', (req, res) => {
   res.clearCookie('jwt').send({ message: 'Выход' });
 });
 

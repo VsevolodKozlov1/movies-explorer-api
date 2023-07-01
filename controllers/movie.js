@@ -3,22 +3,9 @@ const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
-module.exports.getMovies = (req, res, next) => Movie.find({})
+module.exports.getMovies = (req, res, next) => Movie.find({ owner: req.user._id })
   .then((movies) => {
-    const refinedMovies = movies.map((movie) => ({
-      country: movie.country,
-      director: movie.director,
-      duration: movie.duration,
-      year: movie.year,
-      description: movie.description,
-      image: movie.image,
-      trailerLink: movie.trailerLink,
-      nameRU: movie.nameRU,
-      nameEN: movie.nameEN,
-      thumbnail: movie.thumbnail,
-      movieId: movie.movieId,
-    }));
-    res.send(refinedMovies);
+    res.send(movies);
   })
   .catch(next);
 

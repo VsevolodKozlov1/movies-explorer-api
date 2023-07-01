@@ -83,7 +83,9 @@ module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
     return res.send(currentUser);
   })
   .catch((err) => {
-    if (err.name === 'ValidationError') {
+    if (err.code === 11000) {
+      next(new ConflictError('Пользователь с такой почтой уже существует'));
+    } else if (err.name === 'ValidationError') {
       next(new BadRequestError('Введены некорректные данные'));
     } else {
       next(err);
